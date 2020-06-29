@@ -1,0 +1,22 @@
+{
+  "name": "multiple-array-sorter",
+  "version": "0.1.0",
+  "description": "Sort multpile arrays at once according to master sort",
+  "keywords": [
+    "arrays",
+    "sort",
+    "multiple",
+    "index"
+  ],
+  "main": "index.js",
+  "repository": "https://github.com/alrico88/multiple-array-sorter",
+  "author": "Alberto Rico",
+  "license": "MIT",
+  "dependencies": {
+    "lodash": "^4.17.15",
+    "move-position": "^1.0.3"
+  },
+  "devDependencies": {
+    "eslint": "^5.4"
+  }
+}
