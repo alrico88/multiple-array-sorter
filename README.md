@@ -52,10 +52,10 @@ Sorts multiple arrays based on master array sort order
 **Kind**: global typedef  
 **Properties**
 
-| Name      | Type                                                          |
-| --------- | ------------------------------------------------------------- |
-| sortProp  | <code>string</code>                                           |
-| sortOrder | <code>&#x27;asc&#x27;</code> \| <code>&#x27;desc&#x27;</code> |
+| Name        | Type                                                          | Default                       | Description                                                                                   |
+| ----------- | ------------------------------------------------------------- | ----------------------------- | --------------------------------------------------------------------------------------------- |
+| [sortProp]  | <code>string</code>                                           |                               | Property to sort by, if value to sort by is object. Supports nested props, like 'propA.propB' |
+| [sortOrder] | <code>&#x27;asc&#x27;</code> \| <code>&#x27;desc&#x27;</code> | <code>&quot;desc&quot;</code> | Whether to use ascending or descending order to sort                                          |
 
 <a name="SortResult"></a>
 

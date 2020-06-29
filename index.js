@@ -22,8 +22,8 @@ function checkLengths(...arrays) {
 
 /**
  * @typedef SortParams
- * @property {string} sortProp
- * @property {'asc'|'desc'} sortOrder
+ * @property {string} [sortProp] Property to sort by, if value to sort by is object. Supports nested props, like 'propA.propB'
+ * @property {'asc'|'desc'} [sortOrder="desc"] Whether to use ascending or descending order to sort
  */
 
 /**
@@ -50,16 +50,10 @@ function sortMultipleArrays(arrayToSortBy, sortParams, arraysToSort) {
     [indexKey]: index,
     value: d,
   }));
-  let sortedMasterArray;
-  if (sortProp) {
-    sortedMasterArray = orderBy(
-      masterArray,
-      (d) => get(d.value, sortProp),
-      sortOrder
-    );
-  } else {
-    sortedMasterArray = orderBy(masterArray, (d) => d.value, sortOrder);
-  }
+
+  const sortingFunc = sortProp ? (d) => get(d.value, sortProp) : (d) => d.value;
+  const sortedMasterArray = orderBy(masterArray, sortingFunc, sortOrder);
+
   const moveMap = [];
   sortedMasterArray.forEach((item, index) => {
     moveMap.push({
@@ -67,10 +61,12 @@ function sortMultipleArrays(arrayToSortBy, sortParams, arraysToSort) {
       to: index,
     });
   });
+
   const sortedArrays = [];
   arraysToSort.forEach((array) => {
     sortedArrays.push(moveMultiIndex(array, moveMap));
   });
+
   return {
     masterArray: sortedMasterArray.map((d) => d.value),
     sortedArrays,
