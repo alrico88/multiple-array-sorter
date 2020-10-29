@@ -4,6 +4,9 @@
 <dt><a href="#checkLengths">checkLengths(...arrays)</a> ⇒ <code>boolean</code></dt>
 <dd><p>Checks if all arrays are the same size</p>
 </dd>
+<dt><a href="#getMoveMap">getMoveMap(arrayToSortBy, sortParams)</a> ⇒ <code>Object</code></dt>
+<dd><p>Sorts master array and returns moveMap</p>
+</dd>
 <dt><a href="#sortMultipleArrays">sortMultipleArrays(arrayToSortBy, sortParams, arraysToSort)</a> ⇒ <code><a href="#SortResult">SortResult</a></code></dt>
 <dd><p>Sorts multiple arrays based on master array sort order</p>
 </dd>
@@ -15,6 +18,8 @@
 <dt><a href="#SortParams">SortParams</a></dt>
 <dd></dd>
 <dt><a href="#SortResult">SortResult</a></dt>
+<dd></dd>
+<dt><a href="#MoveMapItem">MoveMapItem</a></dt>
 <dd></dd>
 </dl>
 
@@ -29,6 +34,19 @@ Checks if all arrays are the same size
 | Param     | Type                                         | Description               |
 | --------- | -------------------------------------------- | ------------------------- |
 | ...arrays | <code>Array.&lt;Array.&lt;any&gt;&gt;</code> | Arrays to check length of |
+
+<a name="getMoveMap"></a>
+
+## getMoveMap(arrayToSortBy, sortParams) ⇒ <code>Object</code>
+
+Sorts master array and returns moveMap
+
+**Kind**: global function
+
+| Param         | Type                                   |
+| ------------- | -------------------------------------- |
+| arrayToSortBy | <code>Array.&lt;any&gt;</code>         |
+| sortParams    | [<code>SortParams</code>](#SortParams) |
 
 <a name="sortMultipleArrays"></a>
 
@@ -68,3 +86,15 @@ Sorts multiple arrays based on master array sort order
 | ------------ | -------------------------------------------- |
 | masterArray  | <code>Array.&lt;any&gt;</code>               |
 | sortedArrays | <code>Array.&lt;Array.&lt;any&gt;&gt;</code> |
+
+<a name="MoveMapItem"></a>
+
+## MoveMapItem
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type                |
+| ---- | ------------------- |
+| from | <code>number</code> |
+| to   | <code>number</code> |
