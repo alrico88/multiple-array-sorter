@@ -70,6 +70,17 @@ function getMoveMap(arrayToSortBy, sortParams) {
 }
 
 /**
+ * Sorts array based on moveMap
+ *
+ * @param {any[]} array
+ * @param {MoveMapItem[]} moveMap
+ * @returns {any[]}
+ */
+function sortArrayBasedOnMoveMap(array, moveMap) {
+  return moveMultiIndex(array, moveMap);
+}
+
+/**
  * Sorts multiple arrays based on master array sort order
  *
  * @param {any[]} arrayToSortBy Master array to sort the others arrays by
@@ -86,10 +97,12 @@ function sortMultipleArrays(arrayToSortBy, sortParams, arraysToSort) {
 
   return {
     masterArray: sortedMasterArray,
-    sortedArrays: arraysToSort.map((array) => moveMultiIndex(array, moveMap)),
+    sortedArrays: arraysToSort.map((array) =>
+      sortArrayBasedOnMoveMap(array, moveMap)),
   };
 }
 
 module.exports = sortMultipleArrays;
 module.exports.sortMultipleArrays = sortMultipleArrays;
+module.exports.sortArrayBasedOnMoveMap = sortArrayBasedOnMoveMap;
 module.exports.getMoveMap = getMoveMap;

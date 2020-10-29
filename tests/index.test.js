@@ -1,11 +1,16 @@
-const {getMoveMap, sortMultipleArrays} = require('../index');
+const {
+  getMoveMap,
+  sortMultipleArrays,
+  sortArrayBasedOnMoveMap,
+} = require('../index');
 
 const simpleArrayToSort = [1, 3, 4, 2];
 
 const complexArrayToSort = [
   {
     item: 'socks',
-    count: 2},
+    count: 2,
+  },
   {
     item: 'jeans',
     count: 5,
@@ -52,6 +57,28 @@ describe('Test simple array sorting', () => {
     });
 
     expect(sortedMasterArray).toStrictEqual(expectedSortedMasterArray);
+  });
+
+  test('Sorting an array directly using moveMap should sort correctly', () => {
+    const sampleMoveMap = [
+      {
+        from: 0,
+        to: 1,
+      },
+      {
+        from: 1,
+        to: 0,
+      },
+      {
+        from: 2,
+        to: 2,
+      },
+      {
+        from: 3,
+        to: 3,
+      },
+    ];
+    expect(sortArrayBasedOnMoveMap(simpleArrayToSort, sampleMoveMap)).toStrictEqual([3, 1, 4, 2]);
   });
 });
 

@@ -7,6 +7,9 @@
 <dt><a href="#getMoveMap">getMoveMap(arrayToSortBy, sortParams)</a> ⇒ <code>Object</code></dt>
 <dd><p>Sorts master array and returns moveMap</p>
 </dd>
+<dt><a href="#sortArrayBasedOnMoveMap">sortArrayBasedOnMoveMap(array, moveMap)</a> ⇒ <code>Array.&lt;any&gt;</code></dt>
+<dd><p>Sorts array based on moveMap</p>
+</dd>
 <dt><a href="#sortMultipleArrays">sortMultipleArrays(arrayToSortBy, sortParams, arraysToSort)</a> ⇒ <code><a href="#SortResult">SortResult</a></code></dt>
 <dd><p>Sorts multiple arrays based on master array sort order</p>
 </dd>
@@ -47,6 +50,19 @@ Sorts master array and returns moveMap
 | ------------- | -------------------------------------- |
 | arrayToSortBy | <code>Array.&lt;any&gt;</code>         |
 | sortParams    | [<code>SortParams</code>](#SortParams) |
+
+<a name="sortArrayBasedOnMoveMap"></a>
+
+## sortArrayBasedOnMoveMap(array, moveMap) ⇒ <code>Array.&lt;any&gt;</code>
+
+Sorts array based on moveMap
+
+**Kind**: global function
+
+| Param   | Type                                                   |
+| ------- | ------------------------------------------------------ |
+| array   | <code>Array.&lt;any&gt;</code>                         |
+| moveMap | [<code>Array.&lt;MoveMapItem&gt;</code>](#MoveMapItem) |
 
 <a name="sortMultipleArrays"></a>
 
