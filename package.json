@@ -1,6 +1,6 @@
 {
   "name": "multiple-array-sorter",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "description": "Sort multpile arrays at once according to master sort",
   "keywords": [
     "arrays",
