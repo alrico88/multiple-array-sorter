@@ -43,6 +43,6 @@
     "lint": "biome check .",
     "format": "biome format --write .",
     "typecheck": "tsc --noEmit -p tsconfig.test.json",
-    "prepublishOnly": "pnpm build && pnpm test"
+    "prepack": "pnpm build && pnpm test"
   }
 }
