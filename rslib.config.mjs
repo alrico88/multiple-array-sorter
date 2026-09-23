@@ -6,9 +6,13 @@ export default {
   },
   lib: [
     {
-      format: 'cjs',
+      format: 'esm',
       bundle: true,
       dts: true,
+    },
+    {
+      format: 'cjs',
+      bundle: true,
     },
   ],
   output: {
