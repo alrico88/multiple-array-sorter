@@ -1,116 +1,48 @@
-## Functions
+# Multiple Array Sorter
 
-<dl>
-<dt><a href="#checkLengths">checkLengths(...arrays)</a> ⇒ <code>boolean</code></dt>
-<dd><p>Checks if all arrays are the same size</p>
-</dd>
-<dt><a href="#getMoveMap">getMoveMap(arrayToSortBy, sortParams)</a> ⇒ <code>Object</code></dt>
-<dd><p>Sorts master array and returns moveMap</p>
-</dd>
-<dt><a href="#sortArrayBasedOnMoveMap">sortArrayBasedOnMoveMap(array, moveMap)</a> ⇒ <code>Array.&lt;any&gt;</code></dt>
-<dd><p>Sorts array based on moveMap</p>
-</dd>
-<dt><a href="#sortMultipleArrays">sortMultipleArrays(arrayToSortBy, sortParams, arraysToSort)</a> ⇒ <code><a href="#SortResult">SortResult</a></code></dt>
-<dd><p>Sorts multiple arrays based on master array sort order</p>
-</dd>
-</dl>
+Sort a master array and apply its ordering to related arrays.
 
-## Typedefs
+```ts
+import { sortMultipleArrays } from 'multiple-array-sorter';
 
-<dl>
-<dt><a href="#SortParams">SortParams</a></dt>
-<dd></dd>
-<dt><a href="#SortResult">SortResult</a></dt>
-<dd></dd>
-<dt><a href="#MoveMapItem">MoveMapItem</a></dt>
-<dd></dd>
-</dl>
+const { masterArray, sortedArrays } = sortMultipleArrays(
+  [
+    { name: 'Ada', stats: { score: 10 } },
+    { name: 'Linus', stats: { score: 30 } },
+    { name: 'Grace', stats: { score: 20 } },
+  ],
+  { sortProp: 'stats.score', sortOrder: 'asc' },
+  [['ada-row', 'linus-row', 'grace-row']],
+);
 
-<a name="checkLengths"></a>
+// masterArray: Ada, Grace, Linus
+// sortedArrays[0]: ['ada-row', 'grace-row', 'linus-row']
+```
 
-## checkLengths(...arrays) ⇒ <code>boolean</code>
+`sortOrder` defaults to `'desc'`. `sortProp` is optional; without it, values in the master array are compared directly. Nested properties use dot paths, such as `'stats.score'`. Every related array must have the same length as the master array or the function throws.
 
-Checks if all arrays are the same size
+## Other exports
 
-**Kind**: global function
+`getMoveMap` returns the sorted master array and the index map used to reorder related data:
 
-| Param     | Type                                         | Description               |
-| --------- | -------------------------------------------- | ------------------------- |
-| ...arrays | <code>Array.&lt;Array.&lt;any&gt;&gt;</code> | Arrays to check length of |
+```ts
+import {
+  getMoveMap,
+  sortArrayBasedOnMoveMap,
+} from 'multiple-array-sorter';
 
-<a name="getMoveMap"></a>
+const { sortedMasterArray, moveMap } = getMoveMap([3, 1, 2], {
+  sortOrder: 'asc',
+});
+// sortedMasterArray: [1, 2, 3]
+// moveMap: [{ from: 1, to: 0 }, { from: 2, to: 1 }, { from: 0, to: 2 }]
 
-## getMoveMap(arrayToSortBy, sortParams) ⇒ <code>Object</code>
+sortArrayBasedOnMoveMap(['three', 'one', 'two'], moveMap);
+// ['one', 'two', 'three']
+```
 
-Sorts master array and returns moveMap
+All functions and the `SortParams`, `MoveMapItem`, and `SortResult` types are named exports. TypeScript declarations are included.
 
-**Kind**: global function
+## Breaking changes
 
-| Param         | Type                                   |
-| ------------- | -------------------------------------- |
-| arrayToSortBy | <code>Array.&lt;any&gt;</code>         |
-| sortParams    | [<code>SortParams</code>](#SortParams) |
-
-<a name="sortArrayBasedOnMoveMap"></a>
-
-## sortArrayBasedOnMoveMap(array, moveMap) ⇒ <code>Array.&lt;any&gt;</code>
-
-Sorts array based on moveMap
-
-**Kind**: global function
-
-| Param   | Type                                                   |
-| ------- | ------------------------------------------------------ |
-| array   | <code>Array.&lt;any&gt;</code>                         |
-| moveMap | [<code>Array.&lt;MoveMapItem&gt;</code>](#MoveMapItem) |
-
-<a name="sortMultipleArrays"></a>
-
-## sortMultipleArrays(arrayToSortBy, sortParams, arraysToSort) ⇒ [<code>SortResult</code>](#SortResult)
-
-Sorts multiple arrays based on master array sort order
-
-**Kind**: global function  
-**Returns**: [<code>SortResult</code>](#SortResult) - The sorted master array and the sorted resulting arrays
-
-| Param         | Type                                         | Description                               |
-| ------------- | -------------------------------------------- | ----------------------------------------- |
-| arrayToSortBy | <code>Array.&lt;any&gt;</code>               | Master array to sort the others arrays by |
-| sortParams    | [<code>SortParams</code>](#SortParams)       | Parameters to sort master array           |
-| arraysToSort  | <code>Array.&lt;Array.&lt;any&gt;&gt;</code> | Arrays to sort                            |
-
-<a name="SortParams"></a>
-
-## SortParams
-
-**Kind**: global typedef  
-**Properties**
-
-| Name        | Type                                                          | Default                       | Description                                                                                   |
-| ----------- | ------------------------------------------------------------- | ----------------------------- | --------------------------------------------------------------------------------------------- |
-| [sortProp]  | <code>string</code>                                           |                               | Property to sort by, if value to sort by is object. Supports nested props, like 'propA.propB' |
-| [sortOrder] | <code>&#x27;asc&#x27;</code> \| <code>&#x27;desc&#x27;</code> | <code>&quot;desc&quot;</code> | Whether to use ascending or descending order to sort                                          |
-
-<a name="SortResult"></a>
-
-## SortResult
-
-**Kind**: global typedef  
-**Properties**
-
-| Name         | Type                                         |
-| ------------ | -------------------------------------------- |
-| masterArray  | <code>Array.&lt;any&gt;</code>               |
-| sortedArrays | <code>Array.&lt;Array.&lt;any&gt;&gt;</code> |
-
-<a name="MoveMapItem"></a>
-
-## MoveMapItem
-
-**Kind**: global typedef  
-**Properties**
-
-| Name | Type                |
-| ---- | ------------------- |
-| from | <code>number</code> |
-| to   | <code>number</code> |
+The next major release removes the callable CommonJS and default exports. Import the API by name, for example `import { sortMultipleArrays } from 'multiple-array-sorter'`.

@@ -1,8 +1,9 @@
-const {
+import { describe, expect, test } from 'vitest';
+import {
   getMoveMap,
-  sortMultipleArrays,
   sortArrayBasedOnMoveMap,
-} = require('../index');
+  sortMultipleArrays,
+} from '../index';
 
 const simpleArrayToSort = [1, 3, 4, 2];
 
@@ -23,7 +24,7 @@ const complexArrayToSort = [
 
 describe('Test simple array sorting', () => {
   test('getMoveMap method should return correct move map', () => {
-    const {moveMap} = getMoveMap(simpleArrayToSort, {
+    const { moveMap } = getMoveMap(simpleArrayToSort, {
       sortOrder: 'asc',
     });
 
@@ -52,7 +53,7 @@ describe('Test simple array sorting', () => {
   test('getMoveMap method should return correct sorted array', () => {
     const expectedSortedMasterArray = [1, 2, 3, 4];
 
-    const {sortedMasterArray} = getMoveMap(simpleArrayToSort, {
+    const { sortedMasterArray } = getMoveMap(simpleArrayToSort, {
       sortOrder: 'asc',
     });
 
@@ -78,19 +79,21 @@ describe('Test simple array sorting', () => {
         to: 3,
       },
     ];
-    expect(sortArrayBasedOnMoveMap(simpleArrayToSort, sampleMoveMap)).toStrictEqual([3, 1, 4, 2]);
+    expect(
+      sortArrayBasedOnMoveMap(simpleArrayToSort, sampleMoveMap),
+    ).toStrictEqual([3, 1, 4, 2]);
   });
 });
 
 describe('Test complex array sorting', () => {
   test('Object arrays should sort correctly', () => {
-    const {sortedArrays} = sortMultipleArrays(
+    const { sortedArrays } = sortMultipleArrays(
       complexArrayToSort,
       {
         sortOrder: 'asc',
         sortProp: 'count',
       },
-      [['socksDrawer', 'jeansDrawer', 'shirtsDrawer']]
+      [['socksDrawer', 'jeansDrawer', 'shirtsDrawer']],
     );
     expect(sortedArrays[0]).toStrictEqual([
       'socksDrawer',
@@ -100,18 +103,47 @@ describe('Test complex array sorting', () => {
   });
 
   test('If no sort order is specified, it should be desc', () => {
-    const {sortedArrays} = sortMultipleArrays(
+    const { sortedArrays } = sortMultipleArrays(
       complexArrayToSort,
       {
         sortProp: 'count',
       },
-      [['socksDrawer', 'jeansDrawer', 'shirtsDrawer']]
+      [['socksDrawer', 'jeansDrawer', 'shirtsDrawer']],
     );
     expect(sortedArrays[0]).toStrictEqual([
       'jeansDrawer',
       'shirtsDrawer',
       'socksDrawer',
     ]);
+  });
+
+  test('Sort keys are read once per item', () => {
+    let reads = 0;
+    const items = [3, 1, 2].map((score) =>
+      Object.defineProperty({}, 'score', {
+        get() {
+          reads += 1;
+          return score;
+        },
+      }),
+    );
+
+    getMoveMap(items, { sortProp: 'score', sortOrder: 'asc' });
+
+    expect(reads).toBe(items.length);
+  });
+
+  test('Sparse master arrays keep related array positions aligned', () => {
+    const masterArray = new Array<number>(3);
+    masterArray[0] = 3;
+    masterArray[2] = 1;
+
+    const result = sortMultipleArrays(masterArray, { sortOrder: 'desc' }, [
+      ['three', 'missing', 'one'],
+    ]);
+
+    expect(result.masterArray).toStrictEqual([undefined, 3, 1]);
+    expect(result.sortedArrays[0]).toStrictEqual(['missing', 'three', 'one']);
   });
 });
 
@@ -123,8 +155,29 @@ describe('Test error throwing', () => {
         {
           sortOrder: 'asc',
         },
-        [...simpleArrayToSort, 'additionalElement']
+        [[...simpleArrayToSort, 'additionalElement']],
       );
     }).toThrow();
+  });
+
+  test.each([
+    ['source index outside array', [{ from: 4, to: 0 }]],
+    ['destination outside array', [{ from: 0, to: 4 }]],
+    [
+      'duplicate destinations',
+      [
+        { from: 0, to: 0 },
+        { from: 1, to: 0 },
+      ],
+    ],
+    ['missing destination', [{ from: 1, to: 1 }]],
+  ])('Invalid move map (%s) should throw', (_description, moveMap) => {
+    expect(() => sortArrayBasedOnMoveMap([10, 20], moveMap)).toThrow();
+  });
+
+  test('Many related arrays should not exceed the argument limit', () => {
+    const arraysToSort = Array.from({ length: 150_000 }, () => []);
+
+    expect(() => sortMultipleArrays([], {}, arraysToSort)).not.toThrow();
   });
 });

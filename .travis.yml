@@ -9,19 +9,17 @@ branches:
   only:
     - master
 
-before_install:
-  - curl -o- -L https://yarnpkg.com/install.sh | bash
-  - export PATH="$HOME/.yarn/bin:$PATH"
-
 install:
-  - yarn install
+  - corepack enable
+  - pnpm install --frozen-lockfile
 
 cache:
-  yarn: true
+  pnpm: true
   directories:
     - ".eslintcache"
     - "node_modules"
 
 script:
-  - yarn test
-  - yarn run coveralls
+  - pnpm lint
+  - pnpm test
+  - pnpm build
